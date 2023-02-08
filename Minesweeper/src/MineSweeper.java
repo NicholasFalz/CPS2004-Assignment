@@ -3,66 +3,70 @@ import java.util.Scanner;
 
 public class MineSweeper {
 
-    private final String[] chars = {"  ", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"};
+    private final String[] chars = {"--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"}; // chars to indicate the row and column of the gameboard
 
-    private String[][] gameBoardUserView = new String[17][17];
+    private final String[][] gameBoardUserView = new String[17][17]; // gameboard which will be shown to the user (will start filled with blank cells and uncovered according to player choices)
 
-    private String[][] gameBoardHidden = new String[17][17];
+    private final String[][] gameBoardHidden = new String[17][17]; // gameboard which will be hidden from the user (shows all mine positions and number of mines adjacent to each cell)
 
     public static void main(String[] args) {
-        MineSweeper M = new MineSweeper();
-        M.playGame();
+        MineSweeper Game = new MineSweeper();
+        Game.playGame();
     }
 
     public void playGame() {
         generateUserViewGameBoard();
         generateHiddenGameBoard();
-        displayHiddenGameBoard();
-        System.out.println("");
 
-        boolean game = true;
-        while (game) {
+        System.out.println("==================================================");
+        System.out.println("|              Goofy Ahh Minesweeper             |");
+        System.out.println("==================================================\n");
+
+        boolean playing = true;
+        while (playing) {
             displayUserViewGameBoard();
-            game = playerMove();
+            playing = playerMove();
+            if (checkWin()) {
+                System.out.println("Yoy have secured the W. Congratulations!\n");
+                displayHiddenGameBoard();
+                playing = false;
+            }
         }
     }
 
-    public void generateUserViewGameBoard() {
+    public void generateUserViewGameBoard() { // generates the gameboard which the user will see (filled with uncovered cells)
         for (int i = 0; i <= 16; i++) {
             for (int j = 0; j <= 16; j++) {
                 if (i == 0) {
                     gameBoardUserView[i][j] = chars[j];
-                }
-                else if (j == 0) {
+                } else if (j == 0) {
                     gameBoardUserView[i][j] = chars[i];
-                }
-                else {
+                } else {
                     gameBoardUserView[i][j] = "--";
                 }
             }
         }
     }
-    public void generateHiddenGameBoard() {
+
+    public void generateHiddenGameBoard() { // generates the gameboard which will be hidden from the user (contains mine positions and adjacent mine numbers)
         for (int i = 0; i <= 16; i++) {
             for (int j = 0; j <= 16; j++) {
                 if (i == 0) {
                     gameBoardHidden[i][j] = chars[j];
-                }
-                else if (j == 0) {
+                } else if (j == 0) {
                     gameBoardHidden[i][j] = chars[i];
-                }
-                else {
+                } else {
                     gameBoardHidden[i][j] = "--";
                 }
             }
         }
 
         int bomb_num = 0;
-        while (bomb_num < 40) {
-            int x = (int) ((Math.random() * (17 - 1)) + 1);
-            int y = (int) ((Math.random() * (17 - 1)) + 1);
+        while (bomb_num < 40) { // generates 40 random bomb positions in the hidden gameboard
+            int x = (int) ((Math.random() * (17 - 1)) + 1); // randomly generate x position of bomb
+            int y = (int) ((Math.random() * (17 - 1)) + 1); // randomly generate y position of bomb
 
-            if (gameBoardHidden[x][y].equals("--")) {
+            if (gameBoardHidden[x][y].equals("--")) { // if chosen position does not have a bomb in that place already
                 gameBoardHidden[x][y] = "XX";
                 bomb_num++;
             }
@@ -71,7 +75,7 @@ public class MineSweeper {
         for (int i = 1; i <= 16; i++) {
             for (int j = 1; j <= 16; j++) {
                 int adjacentbombs = 0;
-                if (!gameBoardHidden[i][j].equals("XX")) {
+                if (!gameBoardHidden[i][j].equals("XX")) { // the following if statements will check each cell's adjacent cells to determine the number of mines adjacent to each cell
                     if (i > 1) {
                         if (gameBoardHidden[i-1][j].equals("XX")) adjacentbombs += 1;
                     }
@@ -96,31 +100,31 @@ public class MineSweeper {
                     if (i < 16 && j > 1) {
                         if (gameBoardHidden[i+1][j-1].equals("XX")) adjacentbombs += 1;
                     }
-                    gameBoardHidden[i][j] = String.valueOf("0" + adjacentbombs);
+                    gameBoardHidden[i][j] = "0" + adjacentbombs;
                 }
             }
         }
     }
 
-    public void displayUserViewGameBoard() {
+    public void displayUserViewGameBoard() { // method which displays the gameboard which the user will play on
         for (int i = 0; i <= 16; i++) { // row
             for (int j = 0; j <= 16; j++) { // column
                 System.out.print(gameBoardUserView[i][j] + " ");
             }
-            System.out.println(); // change line on console as row comes to end in the matrix.
+            System.out.println(""); // change line on console
         }
     }
 
-    public void displayHiddenGameBoard() {
+    public void displayHiddenGameBoard() { // method which displays the gameboard containing mine locations and adjacent mine numbers
         for (int i = 0; i <= 16; i++) { // row
             for (int j = 0; j <= 16; j++) { // column
                 System.out.print(gameBoardHidden[i][j] + " ");
             }
-            System.out.println(); // change line on console as row comes to end in the matrix.
+            System.out.println(""); // change line on console
         }
     }
 
-    public boolean playerMove() {
+    public boolean playerMove() { // method which prompts the user to choose a cell to reveal by entering its row and colum number
         Scanner scnr = new Scanner(System.in);
         System.out.print("\nEnter Row Number: ");
         int x = scnr.nextInt();
@@ -128,59 +132,54 @@ public class MineSweeper {
         int y = scnr.nextInt();
         System.out.println("");
 
-        if (x < 1 || x > 16 || y < 1 || y > 16) {
-            System.out.println("Invalid input");
-            System.out.println("");
+        if (x < 1 || x > 16 || y < 1 || y > 16) { // providing an invalid integer/s
+            System.out.println("Invalid input\n");
+            return true;
+        } else if (!gameBoardUserView[x][y].equals("--")) { // selecting a cell which has already been revealed
+            System.out.println("This cell has already been revealed\n");
             return true;
         }
-        else if (!gameBoardUserView[x][y].equals("--")) {
-            System.out.println("This cell has already been revealed");
-            System.out.println("");
-            return true;
-        }
-        if (gameBoardHidden[x][y].equals("XX")) {
-            System.out.println("You hit a mine! L siehbi");
-            System.out.println("");
+        if (gameBoardHidden[x][y].equals("XX")) { // reveals a mine
+            System.out.println("You hit a mine! F\n");
+            displayHiddenGameBoard(); // when player loses, the mine positions are displayed, similar to the actual minesweeper
             return false;
-        }
-        else if (checkAdjacentCells(x, y)) {
-            showCells(x, y);
-        }
-        else {
+        } else if (checkAdjacentCells(x, y)) {
+            showCells(x, y); // if none of the selected cell's adjacent cells are bombs, reveal the selected cell along with its 8 adjacent cells
+        } else {
             updateGameBoard(x, y);
         }
         return true;
     }
 
-    public boolean checkAdjacentCells(int i, int j) {
+    public boolean checkAdjacentCells(int i, int j) { // method which checks if the chosen cell's adjacent cells are not bombs
         if (i > 1) {
-            if (gameBoardHidden[i - 1][j].equals("XX")) return false;
+            if (gameBoardHidden[i-1][j].equals("XX")) return false; // if any one of them is a bomb, return false
         }
         if (j > 1) {
-            if (gameBoardHidden[i][j - 1].equals("XX")) return false;
+            if (gameBoardHidden[i][j-1].equals("XX")) return false;
         }
         if (i < 16) {
-            if (gameBoardHidden[i + 1][j].equals("XX")) return false;
+            if (gameBoardHidden[i+1][j].equals("XX")) return false;
         }
         if (j < 16) {
-            if (gameBoardHidden[i][j + 1].equals("XX")) return false;
+            if (gameBoardHidden[i][j+1].equals("XX")) return false;
         }
         if (i > 1 && j > 1) {
-            if (gameBoardHidden[i - 1][j - 1].equals("XX")) return false;
+            if (gameBoardHidden[i-1][j-1].equals("XX")) return false;
         }
         if (i < 16 && j < 16) {
-            if (gameBoardHidden[i + 1][j + 1].equals("XX")) return false;
+            if (gameBoardHidden[i+1][j+1].equals("XX")) return false;
         }
         if (i > 1 && j < 16) {
-            if (gameBoardHidden[i - 1][j + 1].equals("XX")) return false;
+            if (gameBoardHidden[i-1][j+1].equals("XX")) return false;
         }
         if (i < 16 && j > 1) {
-            if (gameBoardHidden[i + 1][j - 1].equals("XX")) return false;
+            if (gameBoardHidden[i+1][j-1].equals("XX")) return false;
         }
-        return true;
+        return true; // if none of them are bombs, return true
     }
 
-    public void showCells(int i, int j) {
+    public void showCells(int i, int j) { // method which reveals the selected cell and its adjacent cells
         gameBoardUserView[i][j] = gameBoardHidden[i][j];
 
         if (i > 1) {
@@ -209,7 +208,16 @@ public class MineSweeper {
         }
     }
 
-    public void updateGameBoard(int x, int y) {
+    public void updateGameBoard(int x, int y) {  // method which updates the user-visible gameboard with the corresponding value in the hidden gameboard
         gameBoardUserView[x][y] = gameBoardHidden[x][y];
+    }
+
+    public boolean checkWin() { // method which checks if the player has won
+        for (int i = 0; i <= 16; i++) { // row
+            for (int j = 0; j <= 16; j++) { // column
+                if (gameBoardUserView[i][j].equals("--") && !gameBoardHidden[i][j].equals("XX")) return false; // if all unrevealed cells are mines, player has won
+            }
+        }
+        return true;
     }
 }
