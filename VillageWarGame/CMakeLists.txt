@@ -3,4 +3,4 @@ project(VillageWarGame)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(VillageWarGame main.cpp Village.cpp Village.h)
+add_executable(VillageWarGame main.cpp)

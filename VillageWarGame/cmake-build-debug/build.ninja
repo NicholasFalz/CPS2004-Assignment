@@ -52,12 +52,6 @@ build CMakeFiles/VillageWarGame.dir/main.cpp.o: CXX_COMPILER__VillageWarGame_Deb
   OBJECT_DIR = CMakeFiles/VillageWarGame.dir
   OBJECT_FILE_DIR = CMakeFiles/VillageWarGame.dir
 
-build CMakeFiles/VillageWarGame.dir/Village.cpp.o: CXX_COMPILER__VillageWarGame_Debug /Users/nichzaqzaq/Desktop/CPS2004$ Assignment/VillageWarGame/Village.cpp || cmake_object_order_depends_target_VillageWarGame
-  DEP_FILE = CMakeFiles/VillageWarGame.dir/Village.cpp.o.d
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++20
-  OBJECT_DIR = CMakeFiles/VillageWarGame.dir
-  OBJECT_FILE_DIR = CMakeFiles/VillageWarGame.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target VillageWarGame
@@ -66,7 +60,7 @@ build CMakeFiles/VillageWarGame.dir/Village.cpp.o: CXX_COMPILER__VillageWarGame_
 #############################################
 # Link the executable VillageWarGame
 
-build VillageWarGame: CXX_EXECUTABLE_LINKER__VillageWarGame_Debug CMakeFiles/VillageWarGame.dir/main.cpp.o CMakeFiles/VillageWarGame.dir/Village.cpp.o
+build VillageWarGame: CXX_EXECUTABLE_LINKER__VillageWarGame_Debug CMakeFiles/VillageWarGame.dir/main.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
   OBJECT_DIR = CMakeFiles/VillageWarGame.dir
   POST_BUILD = :
