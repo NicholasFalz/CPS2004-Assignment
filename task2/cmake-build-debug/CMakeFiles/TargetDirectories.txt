@@ -1,0 +1,3 @@
+/Users/nichzaqzaq/Desktop/CPS2004 Assignment Submission/task2/cmake-build-debug/CMakeFiles/VillageWarGame.dir
+/Users/nichzaqzaq/Desktop/CPS2004 Assignment Submission/task2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/nichzaqzaq/Desktop/CPS2004 Assignment Submission/task2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
